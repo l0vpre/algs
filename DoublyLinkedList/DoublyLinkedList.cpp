@@ -241,9 +241,10 @@ template <typename T>
 void DoublyLinkedList<T>::insert(int index, T data)
 {
     Node *new_node = new Node(data);
+
     if (index == 0)
     {
-        add_tail(new_node);
+        add_tail(data);
         return;
     }
     if (index == _count)
@@ -258,11 +259,21 @@ void DoublyLinkedList<T>::insert(int index, T data)
 }
 
 template <typename T>
-void DoublyLinkedList<T>::add_tail(Node *new_node)
+void DoublyLinkedList<T>::add_tail(T data)
 {
-    _tail->Previous = new_node;
-    new_node->Next = _tail;
-    _tail = new_node;
+    Node *new_node = new Node(data);
+
+    if (_count == 0)
+    {
+        _tail = node;
+        _head = node;
+    }
+    else
+    {
+        _tail->Previous = new_node;
+        new_node->Next = _tail;
+        _tail = new_node;
+    }
     _count++;
 }
 

@@ -18,22 +18,23 @@ class LinkedList
         using value_type = T;
         using element_type = T;
         using iterator_category = std::forward_iterator_tag;
+
     private:
-        Node* current;
+        Node *current;
+
     public:
-    Iterator();
-    Iterator(Node* node);
-    Iterator(const Iterator& iter);
-    Iterator& operator=(const Iterator& other);
-    T& operator*();
-    const T& operator*() const;
-    Iterator& operator++();
-    Iterator operator++(int);
-    int operator-(const Iterator& other) const;
-    bool operator==(const Iterator& other) const;
-    bool operator!=(const Iterator& other) const;
+        Iterator();
+        Iterator(Node *node);
+        Iterator(const Iterator &iter);
+        Iterator &operator=(const Iterator &other);
+        T &operator*();
+        const T &operator*() const;
+        Iterator &operator++();
+        Iterator operator++(int);
+        int operator-(const Iterator &other) const;
+        bool operator==(const Iterator &other) const;
+        bool operator!=(const Iterator &other) const;
     };
-    
 
 private:
     Node *_tail;
@@ -55,7 +56,7 @@ public:
     std::optional<T> pop_head();
     std::optional<T> pop_tail();
     void insert(int index, T data);
-    void add_tail(Node *new_node);
+    void add_tail(T data);
     void remove(T data);
     void remove_at(int index);
 

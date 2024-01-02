@@ -28,27 +28,27 @@ LinkedList<T>::Iterator::Iterator(const typename LinkedList<T>::Iterator &iter)
 }
 
 template <typename T>
-T& LinkedList<T>::Iterator::operator*()
+T &LinkedList<T>::Iterator::operator*()
 {
     return current->Data;
 }
 
 template <typename T>
-const T& LinkedList<T>::Iterator::operator*()
-const
+const T &LinkedList<T>::Iterator::operator*()
+    const
 {
     return current->Data;
 }
 
 template <typename T>
-typename LinkedList<T>::Iterator& LinkedList<T>::Iterator::operator=(const typename LinkedList<T>::Iterator &other)
+typename LinkedList<T>::Iterator &LinkedList<T>::Iterator::operator=(const typename LinkedList<T>::Iterator &other)
 {
     new (this) Iterator(other);
     return *this;
 }
 
 template <typename T>
-typename LinkedList<T>::Iterator& LinkedList<T>::Iterator::operator++()
+typename LinkedList<T>::Iterator &LinkedList<T>::Iterator::operator++()
 {
     current = current->Next;
     return *this;
@@ -63,26 +63,25 @@ typename LinkedList<T>::Iterator LinkedList<T>::Iterator::operator++(int)
 }
 
 template <typename T>
-int LinkedList<T>::Iterator::operator-(const LinkedList::Iterator& other)
-const
+int LinkedList<T>::Iterator::operator-(const LinkedList::Iterator &other)
+    const
 {
     return 0;
 }
 
 template <typename T>
-bool LinkedList<T>::Iterator::operator==(const LinkedList::Iterator& other)
-const
+bool LinkedList<T>::Iterator::operator==(const LinkedList::Iterator &other)
+    const
 {
     return current == other.current;
 }
 
 template <typename T>
-bool LinkedList<T>::Iterator::operator!=(const LinkedList::Iterator& other)
-const
+bool LinkedList<T>::Iterator::operator!=(const LinkedList::Iterator &other)
+    const
 {
     return current != other.current;
 }
-
 
 template <typename T>
 void LinkedList<T>::add_head(T data)
@@ -255,10 +254,21 @@ void LinkedList<T>::insert(int index, T data)
 }
 
 template <typename T>
-void LinkedList<T>::add_tail(Node *new_node)
+void LinkedList<T>::add_tail(T data)
 {
-    new_node->Next = _tail;
-    _tail = new_node;
+    Node *node = new Node(data);
+
+    if (_count == 0)
+    {
+        _tail = node;
+        _head = node;
+    }
+    else
+    {
+        new_node->Next = _tail;
+        _tail = new_node;
+    }
+
     _count++;
 }
 
@@ -334,7 +344,7 @@ typename LinkedList<T>::Iterator LinkedList<T>::begin()
 
 template <typename T>
 typename LinkedList<T>::Iterator LinkedList<T>::begin()
-const
+    const
 {
     return Iterator(_tail);
 }
@@ -347,7 +357,7 @@ typename LinkedList<T>::Iterator LinkedList<T>::end()
 
 template <typename T>
 typename LinkedList<T>::Iterator LinkedList<T>::end()
-const
+    const
 {
     return Iterator();
 }
