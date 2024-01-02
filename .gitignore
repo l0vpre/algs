@@ -1,1 +1,7 @@
 .vscode/
+LikedList/main
+LikedList/LinkedList.o
+LikedList/main.o
+DoublyLikedList/main
+DoublyLikedList/LinkedList.o
+DoublyLikedList/main.o
