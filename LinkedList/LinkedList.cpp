@@ -237,7 +237,7 @@ void LinkedList<T>::insert(int index, T data)
     Node *new_node = new Node(data);
     if (index == 0)
     {
-        add_tail(new_node);
+        add_tail(data);
         return;
     }
     if (index == _count)
@@ -256,12 +256,12 @@ void LinkedList<T>::insert(int index, T data)
 template <typename T>
 void LinkedList<T>::add_tail(T data)
 {
-    Node *node = new Node(data);
+    Node *new_node = new Node(data);
 
     if (_count == 0)
     {
-        _tail = node;
-        _head = node;
+        _tail = new_node;
+        _head = new_node;
     }
     else
     {

@@ -265,8 +265,8 @@ void DoublyLinkedList<T>::add_tail(T data)
 
     if (_count == 0)
     {
-        _tail = node;
-        _head = node;
+        _tail = new_node;
+        _head = new_node;
     }
     else
     {

@@ -15,6 +15,7 @@ public:
     int buckets_count();
     int count();
     void add(T item);
+    bool contains(T item);
     void remove(T Item);
     void expand();
 };
@@ -84,4 +85,18 @@ void HashSet<T, THash>::expand()
     }
     delete[] _buckets;
     _buckets = new_buckets;
+}
+
+template <typename T, typename THash>
+bool HashSet<T, THash>::contains(T item)
+{
+    size_t hash = THash{}(item) % _buckets_count;
+    return _buckets[hash]->contains(item);
+}
+
+template <typename T, typename THash>
+void HashSet<T, THash>::remove(T item)
+{
+    size_t hash = THash{}(item) % _buckets_count;
+    _buckets[hash]->remove(item);
 }

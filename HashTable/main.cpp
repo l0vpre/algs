@@ -11,5 +11,6 @@ int main()
     hash_set->add(33);
     hash_set->add(34);
     hash_set->add(35);
+    delete hash_set;
 
 }
