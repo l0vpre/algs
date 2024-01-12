@@ -40,9 +40,9 @@ private:
     Node *_tail;
     Node *_head;
     int _count;
-    void delete_all_nodes();
 
 public:
+    void delete_all_nodes();
     void add_head(T data);
     int count();
     std::optional<T> head();
@@ -66,7 +66,6 @@ public:
     Iterator end();
     Iterator end() const;
 };
-
 
 template <typename T>
 LinkedList<T>::Node::Node(T data)
@@ -432,9 +431,10 @@ template <typename T>
 bool LinkedList<T>::contains(T item)
 {
     auto current = _tail;
-    while(current!= nullptr)
+    while (current != nullptr)
     {
-        if(current->Data == item) return true;
+        if (current->Data == item)
+            return true;
         current = current->Next;
     }
     return false;

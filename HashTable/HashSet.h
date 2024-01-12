@@ -18,6 +18,10 @@ public:
     bool contains(T item);
     void remove(T Item);
     void expand();
+    ~HashSet();
+    void delete_all_backet();
+    T *to_array();
+    int count_collisions();
 };
 
 template <typename T, typename THash>
@@ -99,4 +103,50 @@ void HashSet<T, THash>::remove(T item)
 {
     size_t hash = THash{}(item) % _buckets_count;
     _buckets[hash]->remove(item);
+}
+
+template <typename T, typename THash>
+HashSet<T, THash>::~HashSet()
+{
+    delete_all_backet();
+}
+
+template <typename T, typename THash>
+void HashSet<T, THash>::delete_all_backet()
+{
+    for (int i = 0; i < _buckets_count; i++)
+    {
+        _buckets[i]->delete_all_nodes();
+    }
+}
+
+template <typename T, typename THash>
+int HashSet<T, THash>::count_collisions()
+{
+    int count_collisions = 0;
+    for (int i = 0; i < _buckets_count; i++)
+    {
+        if (_buckets[i]->count() > 1)
+        {
+            count_collisions += _buckets[i]->count() - 1;
+        }
+    }
+    return count_collisions;
+}
+
+template <typename T, typename THash>
+T *HashSet<T, THash>::to_array()
+{
+    int capacity = _buckets_count + count_collisions();
+    T *array = new T[capacity];
+    int index = 0;
+    for (int i = 0; i < capacity; i++)
+    {
+        for (auto &elem : *_buckets[i])
+        {
+            array[index] = elem;
+            index++;
+        }
+    }
+    return array;
 }
