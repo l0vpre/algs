@@ -1,19 +1,19 @@
 #include <iostream>
 #include "LinkedList.h"
 
-template <typename T, typename THash = std::hash<T>>
+template <typename T, typename THash>
 class HashSet
 {
 private:
     LinkedList<T> **_buckets;
-    int _count;
-    int _buckets_count;
+    size_t _count;
+    size_t _buckets_count;
     const float _GROW_FACTOR = 0.75;
 
 public:
     HashSet();
-    int buckets_count();
-    int count();
+    size_t buckets_count();
+    size_t count();
     void add(T item);
     bool contains(T item);
     void remove(T Item);
@@ -21,7 +21,8 @@ public:
     ~HashSet();
     void delete_all_backet();
     T *to_array();
-    int count_collisions();
+    size_t count_collisions();
+    double load();
 };
 
 template <typename T, typename THash>
@@ -30,20 +31,20 @@ HashSet<T, THash>::HashSet()
     _count = 0;
     _buckets_count = 16;
     _buckets = new LinkedList<T> *[_buckets_count];
-    for (int i = 0; i < _buckets_count; i++)
+    for (size_t i = 0; i < _buckets_count; i++)
     {
         _buckets[i] = new LinkedList<T>();
     }
 }
 
 template <typename T, typename THash>
-int HashSet<T, THash>::buckets_count()
+size_t HashSet<T, THash>::buckets_count()
 {
     return _buckets_count;
 }
 
 template <typename T, typename THash>
-int HashSet<T, THash>::count()
+size_t HashSet<T, THash>::count()
 {
     return _count;
 }
@@ -67,14 +68,14 @@ void HashSet<T, THash>::add(T item)
 template <typename T, typename THash>
 void HashSet<T, THash>::expand()
 {
-    int new_buckets_count = _buckets_count * 2;
+    size_t new_buckets_count = _buckets_count * 2;
     LinkedList<T> **new_buckets = new LinkedList<T> *[new_buckets_count];
 
-    for (int i = 0; i < new_buckets_count; i++)
+    for (size_t i = 0; i < new_buckets_count; i++)
     {
         new_buckets[i] = new LinkedList<T>();
     }
-    for (int i = 0; i < _buckets_count; i++)
+    for (size_t i = 0; i < _buckets_count; i++)
     {
         for (auto &item : *_buckets[i])
         {
@@ -83,12 +84,13 @@ void HashSet<T, THash>::expand()
         }
     }
 
-    for (int i = 0; i < _count; i++)
+    for (size_t i = 0; i < _buckets_count; i++)
     {
         delete _buckets[i];
     }
     delete[] _buckets;
     _buckets = new_buckets;
+    _buckets_count = new_buckets_count;
 }
 
 template <typename T, typename THash>
@@ -114,17 +116,17 @@ HashSet<T, THash>::~HashSet()
 template <typename T, typename THash>
 void HashSet<T, THash>::delete_all_backet()
 {
-    for (int i = 0; i < _buckets_count; i++)
+    for (size_t i = 0; i < _buckets_count; i++)
     {
         _buckets[i]->delete_all_nodes();
     }
 }
 
 template <typename T, typename THash>
-int HashSet<T, THash>::count_collisions()
+size_t HashSet<T, THash>::count_collisions()
 {
-    int count_collisions = 0;
-    for (int i = 0; i < _buckets_count; i++)
+    size_t count_collisions = 0;
+    for (size_t i = 0; i < _buckets_count; i++)
     {
         if (_buckets[i]->count() > 1)
         {
@@ -149,4 +151,21 @@ T *HashSet<T, THash>::to_array()
         }
     }
     return array;
+}
+
+template <typename T, typename THash>
+double HashSet<T, THash>::load()
+{
+    double count = 0;
+    double sum = 0;
+    for (size_t i = 0; i < _buckets_count; i++)
+    {
+        if (_buckets[i]->count() >= 1)
+        {
+            count++;
+            sum += _buckets[i]->count();
+        }
+    }
+    double res = sum / count;
+    return res;
 }
