@@ -111,6 +111,7 @@ template <typename T, typename THash>
 HashSet<T, THash>::~HashSet()
 {
     delete_all_backet();
+    delete[] _buckets;
 }
 
 template <typename T, typename THash>
@@ -118,7 +119,7 @@ void HashSet<T, THash>::delete_all_backet()
 {
     for (size_t i = 0; i < _buckets_count; i++)
     {
-        _buckets[i]->delete_all_nodes();
+        delete _buckets[i];
     }
 }
 
