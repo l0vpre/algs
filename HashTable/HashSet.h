@@ -1,22 +1,22 @@
-#include <iostream>
 #include "LinkedList.h"
+#include <iostream>
 
 template <typename T, typename THash>
 class HashSet
 {
-private:
+  private:
     LinkedList<T> **_buckets;
     size_t _count;
     size_t _buckets_count;
     const float _GROW_FACTOR = 0.75;
 
-public:
+  public:
     HashSet();
     size_t buckets_count();
     size_t count();
     void add(T item);
     bool contains(T item);
-    void remove(T Item);
+    bool remove(T Item);
     void expand();
     ~HashSet();
     void delete_all_backet();
@@ -101,10 +101,16 @@ bool HashSet<T, THash>::contains(T item)
 }
 
 template <typename T, typename THash>
-void HashSet<T, THash>::remove(T item)
+bool HashSet<T, THash>::remove(T item)
 {
     size_t hash = THash{}(item) % _buckets_count;
-    _buckets[hash]->remove(item);
+    auto is_removed = _buckets[hash]->remove(item);
+    if (is_removed)
+    {
+        _count--;
+        return true;
+    }
+    return false;
 }
 
 template <typename T, typename THash>

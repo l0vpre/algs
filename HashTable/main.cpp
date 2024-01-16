@@ -2,6 +2,7 @@
 #include "HashSet.h"
 #include "LinkedList.h"
 #include <chrono>
+#include <cstddef>
 #include <cstdio>
 #include <fstream>
 #include <memory>
@@ -44,11 +45,18 @@ int main()
     };
 
     auto hash_set = std::make_unique<HashSet<int, Hash>>();
-    auto hash_dict = std::make_unique<HashDictionary<std::string, int, Hash>>();
-    hash_dict->insert("xd5",  5);
-    hash_dict->insert("xd1",  2);
-    printf("%d", hash_dict->get("xd1").value());
-    
+    auto hash_dict = std::make_unique<HashDictionary<std::string, size_t, Hash>>();
+    std::ifstream fin("words.txt");
+    std::string temp;
+    size_t num = 0;
+    size_t max_count = 100;
+    size_t count = 0;
+    while (count < max_count && fin >> temp)
+    {
+        hash_dict->insert(temp, num);
+        num += 5;
+    }
+    printf("%lu\n", hash_dict->get("accept").value());
 }
 
 template <typename T, typename THash>
