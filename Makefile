@@ -8,7 +8,9 @@ VALGS_FILES = valgs/DoublyLinkedList.hpp \
 				valgs/HashSet.hpp          \
 				valgs/HashTable.hpp        \
 				valgs/LinkedList.hpp       \
-				valgs/hashes.h
+				valgs/hashes.h             \
+				valgs/array_sorts.cpp      \
+				valgs/linkedlist_sorts.cpp
 
 .PHONY: clean
 .PHONY: test

@@ -3,8 +3,9 @@
 
 #include "../valgs/HashDictionary.hpp"
 #include "../valgs/HashSet.hpp"
-#include "../valgs/Sorts.cpp"
+#include "../valgs/array_sorts.cpp"
 #include "../valgs/hashes.h"
+#include "../valgs/linkedlist_sorts.cpp"
 #include <chrono>
 // #include <cstddef>
 #include <cstdio>
@@ -16,6 +17,11 @@
 int compare(int a, int b)
 {
     return a - b;
+}
+
+int compare_reverse(int a, int b)
+{
+    return b - a;
 }
 // TODO: ???
 int main1()
@@ -52,14 +58,27 @@ int main()
 {
 
     int arr[] = {3, 5, 42, 463, 78, 22, 265, -3, -294};
+    LinkedList<int> *list = new LinkedList<int>();
     size_t count = len(arr);
-    bubble_sort<int>(arr, count, compare);
-    std::cout << "count:"<<count<<std::endl;
+    // bubble_sort<int>(arr, count, compare_reverse);
+    //selection_sort<int>(arr, count, compare_reverse);
+    //nsetion_sort<int>(arr, count, compare_reverse);
+
+    std::cout << "count:" << count << std::endl;
     for (size_t i = 0; i < count; i++)
     {
-        std::cout << arr[i] << " " ;
+        list->add_head(arr[i]);
+        std::cout << arr[i] << " ";
     }
-    std::cout<<std::endl;
+    std::cout << std::endl;
+    bubble_sort<int>(list, list->count(), compare_reverse);
+    std::cout << "count: " << list->count() << std::endl;
+    for (auto item : *list)
+    {
+        std::cout << item << " ";
+    }
+    std::cout << std::endl;
+
     return 0;
 }
 
