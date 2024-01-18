@@ -24,29 +24,25 @@ class HashDictionary
     };
 
   private:
-    HashTable<Pair> *_table;
+    HashTable<Pair> _table;
 
   public:
     // TODO: move implementation from class definition
-    HashDictionary()
+    HashDictionary() : _table(&hashdict_hash_func<Pair, THash>)
     {
-        _table = new HashTable<Pair>(&hashdict_hash_func<Pair, THash>);
     }
     // TODO: move implementation from class definition
-    ~HashDictionary()
-    {
-        delete _table;
-    }
+
     // TODO: ifdef VALGS_TESTING
     // TODO: move implementation from class definition
     size_t buckets_count()
     {
-        return _table->buckets_count;
+        return _table.buckets_count;
     }
     // TODO: move implementation from class definition
     size_t count()
     {
-        return _table->count;
+        return _table.count;
     }
     void insert(TKey key, TValue value); // TODO: test insert
     std::optional<TValue> get(TKey key); // TODO: get
@@ -55,18 +51,18 @@ class HashDictionary
     // TODO: move implementation from class definition
     size_t hash_index(TKey key)
     {
-        return THash{}(key) % _table->buckets_count;
+        return THash{}(key) % _table.buckets_count;
     }
 };
 
 template <typename TKey, typename TValue, typename THash>
 void HashDictionary<TKey, TValue, THash>::insert(TKey key, TValue value)
 {
-    if (_table->need_to_expand())
+    if (_table.need_to_expand())
     {
-        _table->expand();
+        _table.expand();
     }
-    auto bucket = (*_table)[hash_index(key)];
+    auto bucket = _table[hash_index(key)];
     for (auto &pair : *bucket)
     {
         if (pair.key == key)
@@ -76,13 +72,13 @@ void HashDictionary<TKey, TValue, THash>::insert(TKey key, TValue value)
         }
     }
     bucket->add_head(Pair(key, value));
-    _table->count++;
+    _table.count++;
 }
 
 template <typename TKey, typename TValue, typename THash>
 std::optional<TValue> HashDictionary<TKey, TValue, THash>::get(TKey key)
 {
-    auto bucket = (*_table)[hash_index(key)];
+    auto bucket = _table[hash_index(key)];
     for (auto &pair : *bucket)
     {
         if (pair.key == key)
@@ -96,7 +92,7 @@ std::optional<TValue> HashDictionary<TKey, TValue, THash>::get(TKey key)
 template <typename TKey, typename TValue, typename THash>
 bool HashDictionary<TKey, TValue, THash>::contains_key(TKey key)
 {
-    auto bucket = (*_table)[hash_index(key)];
+    auto bucket = _table[hash_index(key)];
     for (auto &pair : *bucket)
     {
         if (pair.key == key)
@@ -110,11 +106,11 @@ bool HashDictionary<TKey, TValue, THash>::contains_key(TKey key)
 template <typename TKey, typename TValue, typename THash>
 bool HashDictionary<TKey, TValue, THash>::remove(TKey key)
 {
-    auto bucket = (*_table)[hash_index(key)];
+    auto bucket = _table[hash_index(key)];
     auto is_removed = bucket->remove_by([&key](Pair pair) { return pair.key == key; });
     if (is_removed)
     {
-        _table->count--;
+        _table.count--;
         return true;
     }
     return false;

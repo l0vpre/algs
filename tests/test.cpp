@@ -1,7 +1,9 @@
+#include <ostream>
 #define VALGS_TESTING
 
 #include "../valgs/HashDictionary.hpp"
 #include "../valgs/HashSet.hpp"
+#include "../valgs/Sorts.cpp"
 #include "../valgs/hashes.h"
 #include <chrono>
 // #include <cstddef>
@@ -10,9 +12,13 @@
 #include <iostream>
 #include <memory>
 #include <vector>
-
+#define len(x) sizeof(x) / sizeof(x[0])
+int compare(int a, int b)
+{
+    return a - b;
+}
 // TODO: ???
-int main()
+int main1()
 {
     auto hash_set = std::make_unique<HashSet<std::string>>();
     auto hash_dict = std::make_unique<HashDictionary<std::string, size_t, Hash>>();
@@ -39,6 +45,21 @@ int main()
               << "Count of elements: " << hash_dict->count() << '\n'
               << "Count of buckets: " << hash_dict->buckets_count() << '\n'
               << std::endl;
+    return 0;
+}
+
+int main()
+{
+
+    int arr[] = {3, 5, 42, 463, 78, 22, 265, -3, -294};
+    size_t count = len(arr);
+    bubble_sort<int>(arr, count, compare);
+    std::cout << "count:"<<count<<std::endl;
+    for (size_t i = 0; i < count; i++)
+    {
+        std::cout << arr[i] << " " ;
+    }
+    std::cout<<std::endl;
     return 0;
 }
 

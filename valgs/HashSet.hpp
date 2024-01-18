@@ -13,26 +13,22 @@ template <typename T, typename THash = std::hash<T>>
 class HashSet
 {
   private:
-    HashTable<T> *_table;
+    HashTable<T> _table;
 
   public:
     // TODO: move implementation from class definition
-    HashSet()
+    HashSet() : _table(&hashset_hash_func<T, THash>)
     {
-        _table = new HashTable<T>(&hashset_hash_func<T, THash>);
-    };
-    // TODO: move implementation from class definition
-    ~HashSet()
-    {
-        delete _table;
     }
+
+    // TODO: move implementation from class definition
 
     // TODO: make all needed testing methods
 #ifdef VALGS_TESTING
     // TODO: move implementation from class definition
     size_t buckets_count()
     {
-        return _table->buckets_count;
+        return _table.buckets_count;
     };
     // TODO: move implementation from class definition
     HashTable<T> *get_table()
@@ -43,7 +39,7 @@ class HashSet
     // TODO: move implementation from class definition
     size_t count()
     {
-        return _table->count;
+        return _table.count;
     };
     void add(T item);      // TODO: test add
     bool contains(T item); // TODO: test contains
@@ -52,27 +48,27 @@ class HashSet
     // TODO: move implementation from class definition
     size_t hash_index(T &item)
     {
-        return THash{}(item) % _table->buckets_count;
+        return THash{}(item) % _table.buckets_count;
     }
 };
 
 template <typename T, typename THash>
 void HashSet<T, THash>::add(T item)
 {
-    if (_table->need_to_expand())
+    if (_table.need_to_expand())
     {
-        _table->expand();
+        _table.expand();
     }
 
     size_t hash = hash_index(item);
-    auto bucket = (*_table)[hash];
+    auto bucket = _table[hash];
 
     if (bucket->contains(item))
     {
         return;
     }
     bucket->add_head(item);
-    _table->count++;
+    _table.count++;
 }
 
 template <typename T, typename THash>
@@ -86,12 +82,12 @@ template <typename T, typename THash>
 bool HashSet<T, THash>::remove(T item)
 {
     size_t hash = hash_index();
-    auto bucket = (*_table)[hash];
+    auto bucket = _table[hash];
 
     auto is_removed = bucket->remove(item);
     if (is_removed)
     {
-        _table->count--;
+        _table.count--;
         return true;
     }
     return false;
