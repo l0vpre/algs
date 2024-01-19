@@ -62,7 +62,8 @@ int main()
     size_t count = len(arr);
     // bubble_sort<int>(arr, count, compare_reverse);
     //selection_sort<int>(arr, count, compare_reverse);
-    //nsetion_sort<int>(arr, count, compare_reverse);
+    //insetion_sort<int>(arr, count, compare_reverse);
+    merge_sort<int>(arr,count,compare_reverse);
 
     std::cout << "count:" << count << std::endl;
     for (size_t i = 0; i < count; i++)
@@ -71,7 +72,7 @@ int main()
         std::cout << arr[i] << " ";
     }
     std::cout << std::endl;
-    bubble_sort<int>(list, list->count(), compare_reverse);
+    merge_sort<int>(list, list->count(), compare_reverse);
     std::cout << "count: " << list->count() << std::endl;
     for (auto item : *list)
     {
