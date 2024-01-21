@@ -1,19 +1,22 @@
-#include <ostream>
+
 #define VALGS_TESTING
 
 #include "../valgs/HashDictionary.hpp"
 #include "../valgs/HashSet.hpp"
-#include "../valgs/array_sorts.cpp"
+#include "../valgs/array_sorts.hpp"
 #include "../valgs/hashes.h"
-#include "../valgs/linkedlist_sorts.cpp"
+#include "../valgs/linkedlist_sorts.hpp"
+#include "test_sorts.hpp"
 #include <chrono>
-// #include <cstddef>
+#include <cstddef>
 #include <cstdio>
 #include <fstream>
 #include <iostream>
 #include <memory>
 #include <vector>
+
 #define len(x) sizeof(x) / sizeof(x[0])
+
 int compare(int a, int b)
 {
     return a - b;
@@ -23,6 +26,12 @@ int compare_reverse(int a, int b)
 {
     return b - a;
 }
+
+int sum(int a, int b)
+{
+    return a + b;
+}
+
 // TODO: ???
 int main1()
 {
@@ -56,29 +65,28 @@ int main1()
 
 int main()
 {
+    std::ifstream fin("tests/words_shuffle.txt");
+    std::ofstream fout("tests/sorted_words.txt");
 
-    int arr[] = {3, 5, 42, 463, 78, 22, 265, -3, -294};
-    LinkedList<int> *list = new LinkedList<int>();
-    size_t count = len(arr);
-    // bubble_sort<int>(arr, count, compare_reverse);
-    //selection_sort<int>(arr, count, compare_reverse);
-    //insetion_sort<int>(arr, count, compare_reverse);
-    merge_sort<int>(arr,count,compare_reverse);
+    auto vec = new std::vector<std::string>();
+    auto list = new LinkedList<std::string>();
+    std::string temp;
 
-    std::cout << "count:" << count << std::endl;
-    for (size_t i = 0; i < count; i++)
+    size_t max_count = 1'000;
+    size_t count = 0;
+
+    while (count < max_count && fin >> temp)
     {
-        list->add_head(arr[i]);
-        std::cout << arr[i] << " ";
+        vec->emplace_back(temp);
+        list->add_head(temp);
+        count++;
     }
-    std::cout << std::endl;
-    merge_sort<int>(list, list->count(), compare_reverse);
-    std::cout << "count: " << list->count() << std::endl;
-    for (auto item : *list)
-    {
-        std::cout << item << " ";
-    }
-    std::cout << std::endl;
+    std::cout << "For count: " << max_count << std::endl;
+    bench_all_array_sorts(*vec);
+    bench_all_linked_list_sorts(list);
+
+    delete vec;
+    delete list;
 
     return 0;
 }
